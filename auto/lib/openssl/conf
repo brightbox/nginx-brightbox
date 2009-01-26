@@ -1,0 +1,70 @@
+
+# Copyright (C) Igor Sysoev
+
+
+if [ $OPENSSL != NONE ]; then
+    CORE_INCS="$CORE_INCS $OPENSSL/include"
+
+    case "$CC" in
+        *)
+            have=NGX_OPENSSL . auto/have
+            have=NGX_SSL . auto/have
+            LINK_DEPS="$LINK_DEPS $OPENSSL/libssl.a $OPENSSL/libcrypto.a"
+            CORE_LIBS="$CORE_LIBS $OPENSSL/libssl.a $OPENSSL/libcrypto.a"
+        ;;
+    esac
+
+    case "$NGX_SYSTEM" in
+        SunOS|Linux)
+            CORE_LIBS="$CORE_LIBS -ldl"
+        ;;
+    esac
+
+
+else
+
+    case "$NGX_PLATFORM" in
+
+        win32)
+            have=NGX_OPENSSL . auto/have
+            have=NGX_SSL . auto/have
+            OPENSSL=YES
+
+            CORE_INCS="$CORE_INCS c:/openssl/include"
+            CORE_LIBS="$CORE_LIBS c:/openssl/ssleay32.lib"
+            CORE_LIBS="$CORE_LIBS c:/openssl/libeay32.lib"
+
+            # libeay32.lib requires gdi32.lib
+            CORE_LIBS="$CORE_LIBS gdi32.lib"
+            # OpenSSL 0.8's libeay32.lib requires advapi32.lib
+            CORE_LIBS="$CORE_LIBS advapi32.lib"
+        ;;
+
+        *)
+            OPENSSL=NO
+
+            ngx_feature="OpenSSL library"
+            ngx_feature_name="NGX_OPENSSL"
+            ngx_feature_run=no
+            ngx_feature_incs="#include <openssl/ssl.h>"
+            ngx_feature_path=
+            ngx_feature_libs="-lssl -lcrypto"
+            ngx_feature_test="SSL_library_init()"
+            . auto/feature
+
+            if [ $ngx_found = yes ]; then
+                have=NGX_SSL . auto/have
+                CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
+                OPENSSL=YES
+
+                case "$NGX_SYSTEM" in
+                    SunOS)
+                        CORE_LIBS="$CORE_LIBS -ldl"
+                    ;;
+                esac
+            fi
+        ;;
+
+    esac
+
+fi

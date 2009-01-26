@@ -1,0 +1,30 @@
+
+# Copyright (C) Igor Sysoev
+
+
+if test -n "$OPENSSL_OPT"; then
+    NGX_OPENSSL_CONFIG="./Configure \"$OPENSSL_OPT\""
+else
+    NGX_OPENSSL_CONFIG="./config"
+fi
+
+case $USE_THREADS in
+    NO) NGX_OPENSSL_CONFIG="$NGX_OPENSSL_CONFIG no-threads" ;;
+    *)  NGX_OPENSSL_CONFIG="$NGX_OPENSSL_CONFIG threads" ;;
+esac
+
+case "$NGX_PLATFORM" in
+    *)
+        cat << END                                            >> $NGX_MAKEFILE
+
+$OPENSSL/libssl.a:
+	cd $OPENSSL \\
+	&& \$(MAKE) clean \\
+	&& $NGX_OPENSSL_CONFIG no-shared \\
+	&& \$(MAKE)
+
+END
+
+    ;;
+
+esac

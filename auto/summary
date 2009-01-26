@@ -1,0 +1,156 @@
+
+# Copyright (C) Igor Sysoev
+
+
+### STUB
+
+if [ $USE_THREADS != NO ]; then
+
+cat << END
+
+$0: error: the threads support is broken now.
+
+END
+        exit 1
+    fi
+
+###
+
+
+echo
+echo "Configuration summary"
+
+
+#case $USE_THREADS in
+#    rfork)         echo "  + using rfork()ed threads" ;;
+#    pthreads)      echo "  + using libpthread threads library" ;;
+#    libthr)        echo "  + using FreeBSD libthr threads library" ;;
+#    libc_r)        echo "  + using FreeBSD libc_r threads library" ;;
+#    linuxthreads)  echo "  + using FreeBSD LinuxThreads port library" ;;
+#    NO)            echo "  + threads are not used" ;;
+#    *)             echo "  + using lib$USE_THREADS threads library" ;;
+#esac
+
+if [ $USE_PCRE = DISABLED ]; then
+    echo "  + PCRE library is disabled"
+
+else
+    case $PCRE in
+        YES)   echo "  + using system PCRE library" ;;
+        NONE)  echo "  + PCRE library is not used" ;;
+        NO)    echo "  + PCRE library is not found" ;;
+        *)     echo "  + using PCRE library: $PCRE" ;;
+    esac
+fi
+
+case $OPENSSL in
+    YES)   echo "  + using system OpenSSL library" ;;
+    NONE)  echo "  + OpenSSL library is not used" ;;
+    NO)    echo "  + OpenSSL library is not found" ;;
+    *)     echo "  + using OpenSSL library: $OPENSSL" ;;
+esac
+
+case $MD5 in
+    YES)   echo "  + md5: using $MD5_LIB library" ;;
+    NONE)  echo "  + md5 library is not used" ;;
+    NO)    echo "  + md5 library is not found" ;;
+    *)     echo "  + using md5 library: $MD5" ;;
+esac
+
+case $SHA1 in
+    YES)   echo "  + sha1: using $SHA1_LIB library" ;;
+    NONE)  echo "  + sha1 library is not used" ;;
+    NO)    echo "  + sha1 library is not found" ;;
+    *)     echo "  + using sha1 library: $SHA1" ;;
+esac
+
+case $ZLIB in
+    YES)   echo "  + using system zlib library" ;;
+    NONE)  echo "  + zlib library is not used" ;;
+    NO)    echo "  + zlib library is not found" ;;
+    *)     echo "  + using zlib library: $ZLIB" ;;
+esac
+
+echo
+
+
+if [ $HTTP_REWRITE = YES ]; then
+    if [ $USE_PCRE = DISABLED ]; then
+
+cat << END
+$0: error: the HTTP rewrite module requires the PCRE library.
+You can either disable the module by using --without-http_rewrite_module
+option or you have to enable the PCRE support.
+
+END
+        exit 1
+    fi
+
+    if [ $PCRE = NONE -o $PCRE = NO ]; then
+
+cat << END
+$0: error: the HTTP rewrite module requires the PCRE library.
+You can either disable the module by using --without-http_rewrite_module
+option, or install the PCRE library into the system, or build the PCRE library
+statically from the source with nginx by using --with-pcre=<path> option.
+
+END
+
+        exit 1
+    fi
+fi
+
+
+if [ $HTTP_GZIP = YES ]; then
+    if [ $ZLIB = NONE -o $ZLIB = NO ]; then
+
+cat << END
+$0: error: the HTTP gzip module requires the zlib library.
+You can either disable the module by using --without-http_gzip_module
+option, or install the zlib library into the system, or build the zlib library
+statically from the source with nginx by using --with-zlib=<path> option.
+
+END
+
+        exit 1
+    fi
+fi
+
+
+if [ $HTTP_SSL = YES ]; then
+    if [ $OPENSSL = NONE -o $OPENSSL = NO ]; then
+
+cat << END
+$0: error: the HTTP SSL module requires the OpenSSL library.
+You can either do not enable the module, or install the OpenSSL library
+into the system, or build the OpenSSL library statically from the source
+with nginx by using --with-openssl=<path> option.
+
+END
+
+        exit 1
+    fi
+fi
+
+
+cat << END
+  nginx path prefix: "$NGX_PREFIX"
+  nginx binary file: "$NGX_SBIN_PATH"
+  nginx configuration prefix: "$NGX_CONF_PREFIX"
+  nginx configuration file: "$NGX_CONF_PATH"
+  nginx pid file: "$NGX_PID_PATH"
+END
+
+if test -n "$NGX_ERROR_LOG_PATH"; then
+    echo "  nginx error log file: \"$NGX_ERROR_LOG_PATH\""
+else
+    echo "  nginx logs errors to stderr"
+fi
+
+cat << END
+  nginx http access log file: "$NGX_HTTP_LOG_PATH"
+  nginx http client request body temporary files: "$NGX_HTTP_CLIENT_TEMP_PATH"
+  nginx http proxy temporary files: "$NGX_HTTP_PROXY_TEMP_PATH"
+  nginx http fastcgi temporary files: "$NGX_HTTP_FASTCGI_TEMP_PATH"
+
+END
