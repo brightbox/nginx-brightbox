@@ -1,0 +1,58 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+
+    configure)
+
+        if [ -z $2 ] && [ ! -e /etc/nginx/sites-enabled/default ] ; 
+	then
+            ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+        fi
+
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+
+    ;;
+
+esac
+
+if [ -x "/etc/init.d/nginx" ]
+then
+	if [ -f /var/run/nginx.pid ] && /bin/pidof /usr/sbin/nginx >/dev/null
+        then
+		echo "Trying a soft restart"
+		if /bin/kill -USR2 `cat /var/run/nginx.pid` 2>/dev/null
+		then
+			echo "PID IS RIGHT"
+			while [ ! -f /var/run/nginx.pid.oldbin ]
+			do
+				echo "WAITING"
+				cnt=`expr $cnt + 1`
+				if [ $cnt -gt 10 ]
+				then
+					echo "Nginx 'soft' update failed, doing restart";
+					/bin/kill -9 `cat /var/run/nginx.pid`
+					invoke-rc.d nginx start
+					exit 0
+				fi
+				sleep 1
+			done
+			echo "QUIT"
+			/bin/kill -QUIT `cat /var/run/nginx.pid.oldbin`
+		fi
+	fi
+fi
+
+#DEBHELPER#
+
+exit 0

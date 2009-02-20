@@ -1,0 +1,4 @@
+objs/nginx usr/sbin
+html/* var/www/nginx-default
+debian/conf/* etc/nginx
+debian/NEWS.Debian usr/share/doc/nginx

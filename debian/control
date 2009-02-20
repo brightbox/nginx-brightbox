@@ -1,0 +1,21 @@
+Source: nginx
+Section: web
+Priority: optional
+Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
+XSBC-Original-Maintainer: Jose Parrella <bureado@debian.org>
+Uploaders: Fabio Tranchitella <kobold@debian.org>
+Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev
+Standards-Version: 3.8.0
+Homepage: http://nginx.net
+Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/nginx/trunk
+Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/nginx/trunk
+
+Package: nginx
+Architecture: any
+Depends: ${shlibs:Depends}, lsb-base (>= 3.2-14)
+Provides: httpd
+Description: small, but very powerful and efficient web server
+ Nginx (engine x) is a web server created by Igor Sysoev and kindly provided
+ to the open-source community. This server can be used as standalone HTTP
+ server and as a reverse proxy server before some Apache or another big 
+ server to reduce load to backend servers by many concurrent HTTP-sessions.

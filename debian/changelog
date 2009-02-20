@@ -1,0 +1,273 @@
+nginx (0.6.35-0ubuntu1) jaunty; urgency=low
+
+  * New upstream bugfix release
+
+ -- Daniel Hahler <ubuntu@thequod.de>  Fri, 20 Feb 2009 21:01:23 +0100
+
+nginx (0.6.34-2ubuntu1) jaunty; urgency=low
+
+   * Merge from Debian unstable. Remaining Ubuntu changes:
+    + debian/control:
+      - Add Depend on lsb >= 3.2-14, which has the status_of_proc() function.
+    + debian/init.d:
+      - Add sourcing to '. /lib/lsb/init-functions'
+      - Add the 'status' action
+   * Drop unneeded IOV_MAX patch and dpatch system (LP: #260022)
+
+ -- Lionel Porcheron <lionel@alveonet.org>  Mon, 08 Dec 2008 00:02:46 +0100
+
+nginx (0.6.34-2) unstable; urgency=low
+
+  * Added support for realip module. (Closes: #507419)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Sat, 06 Dec 2008 10:34:01 +0100
+
+nginx (0.6.34-1ubuntu1) jaunty; urgency=low
+
+  * Merge from debian unstable, remaining changes: (LP: #303916)
+    + debian/control:
+      - Add Depend on lsb >= 3.2-14, which has the status_of_proc() function.
+    + debian/init.d:
+      - Add sourcing to '. /lib/lsb/init-functions'
+      - Add the 'status' action
+    + Fixed FTBFS by properly defining IOV_MAX to its Linux equivelent.
+    + Added dpatch based patch system
+  
+ -- Bhavani Shankar <right2bhavi@gmail.com>  Mon, 01 Dec 2008 20:11:53 +0530
+
+nginx (0.6.34-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/rules: removed the --with-debug configure switch. (Closes: #500891)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Sun, 30 Nov 2008 11:37:13 +0100
+
+nginx (0.6.32-3ubuntu1) intrepid; urgency=low
+
+  * Merge from Debian unstable. Remaining Ubuntu changes:
+    + debian/control:
+      - Add Depend on lsb >= 3.2-14, which has the status_of_proc() function.
+    + debian/init.d:
+      - Add sourcing to '. /lib/lsb/init-functions'
+      - Add the 'status' action
+    + Fixed FTBFS by properly defining IOV_MAX to its Linux equivelent.
+    + Added dpatch based patch system
+
+ -- Luca Falavigna <dktrkranz@ubuntu.com>  Sun, 05 Oct 2008 12:50:54 +0200
+
+nginx (0.6.32-3) unstable; urgency=low
+
+  * debian/control: build again on all the architectures, but use the switch
+    --with-cc-opt="-m32 -mcpu=ultrasparc" on sparch. (Closes: #479185)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Thu, 25 Sep 2008 17:14:27 +0200
+
+nginx (0.6.32-2) unstable; urgency=low
+
+  * debian/control: disabled support for sparc. (Closes: #479185)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Sat, 20 Sep 2008 11:48:48 +0200
+
+nginx (0.6.32-1ubuntu1) intrepid; urgency=low
+
+  * Merge from debian unstable, remaining changes:
+   + debian/control: 
+    - Add Depend on lsb >= 3.2-14, which has the status_of_proc() function.
+   + debian/init.d:
+    - Add sourcing to '. /lib/lsb/init-functions'
+    - Add the 'status' action 
+   + Fixed FTBFS on ubuntu by properly defining IOV_MAX to its Linux
+     equivelent.
+   + Added dpatch based patch system
+
+ -- Emanuele Gentili <emgent@ubuntu.com>  Fri, 08 Aug 2008 09:28:21 +0200
+
+nginx (0.6.32-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Fabio Tranchitella <kobold@debian.org>  Fri, 18 Jul 2008 09:15:58 +0200
+
+nginx (0.6.31-2ubuntu2) intrepid; urgency=low
+
+  * debian/control: Add Depend on lsb >= 3.2-14, which has the
+    status_of_proc() function.
+  * debian/init.d: 
+    - Add sourcing to '. /lib/lsb/init-functions' 
+    - Add the 'status' action (LP: #251985).
+
+ -- Andres Rodriguez <andreserl@ubuntu.com>  Fri, 25 Jul 2008 13:48:49 -0500
+
+nginx (0.6.31-2ubuntu1) intrepid; urgency=low
+
+  * Fixed FTBFS on ubuntu by properly defining IOV_MAX to its Linux
+    equivelent.
+  * Added dpatch based patch system
+  * Modify Maintainer value to match the DebianMaintainerField
+    specification.
+
+ -- Michael Casadevall <sonicmctails@gmail.com>  Fri, 11 Jul 2008 23:23:01 +0000
+
+nginx (0.6.31-2) unstable; urgency=low
+
+  * debian/control: removed httpd-cgi, nginx doesn't support executing
+    external programs. (Closes: #482332)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Thu, 22 May 2008 08:18:52 +0200
+
+nginx (0.6.31-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Fabio Tranchitella <kobold@debian.org>  Mon, 12 May 2008 22:34:55 +0200
+
+nginx (0.6.30-2) unstable; urgency=low
+
+  * Upload into unstable.
+
+ -- Fabio Tranchitella <kobold@debian.org>  Mon, 12 May 2008 14:24:53 +0200
+
+nginx (0.6.30-1) experimental; urgency=low
+
+  * New upstream release.
+  * Sync with the unstable packages.
+  * debian/conf/nginx.conf: add support for a conf.d directory.
+    (Closes: #476952)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Fri, 02 May 2008 09:32:46 +0200
+
+nginx (0.5.35-3) unstable; urgency=low
+
+  * debian/conf/sites-available/default: adding support for /doc and /images
+    namespaces (Closes: #474519)
+
+ -- Jose Parrella <bureado@debian.org>  Mon, 07 Apr 2008 13:22:32 -0430
+
+nginx (0.5.35-2) unstable; urgency=low
+
+  * debian/init.d: do not break if start-stop-daemon exits with an error.
+    (Closes: #464453)
+
+ -- Fabio Tranchitella <kobold@debian.org>  Sun, 10 Feb 2008 17:57:57 +0100
+
+nginx (0.5.35-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Fabio Tranchitella <kobold@debian.org>  Wed, 09 Jan 2008 07:58:56 +0100
+
+nginx (0.5.34-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: added Homepage, Vcs-Svn, Vcs-Browser fields; updated
+    Standard-Versions to 3.7.3.
+
+ -- Fabio Tranchitella <kobold@debian.org>  Mon, 24 Dec 2007 12:26:27 +0100
+
+nginx (0.5.33-1) unstable; urgency=low
+
+  * New stable upstream release (Closes: #451173)
+  * nginx now provides httpd, httpd-cgi virtual packages
+    (Closes: #439468, #452025)
+  * sites-enabled/default link is now provided only on fresh 
+    installations (Closes: #432961)
+  * Updated code for online upgrading of nginx (Closes: #445246)
+  * Reviewed maintainer scripts for correct behaviour on updates
+    (Closes: #452787, #435965)
+  * Removed debian/nginx.links and debian/preinst.
+  * Changing Maintainer address to bureado@debian.org.
+  * Welcoming Fabio Tranchitella <kobold@debian.org> as an nginx 
+    uploader for Debian. Thanks for your patches.
+
+ -- Jose Parrella <bureado@debian.org>  Sat, 08 Dec 2007 11:27:54 -0400
+
+nginx (0.5.30-1) unstable; urgency=low
+
+  * New stable upstream release.
+  * Adding mime.types (and other upstream conffiles) to the package 
+    since it was lost on 0.5.26 (Closes: #435964)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Sat, 04 Aug 2007 10:39:40 -0400
+
+nginx (0.5.26-1) unstable; urgency=low
+
+  * New stable upstream release.
+  * Updating init.d usage message.
+  * Installing logrotate script (Closes: #397978)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Sun, 17 Jun 2007 20:43:35 +0100
+
+nginx (0.5.18-1) unstable; urgency=low
+
+  * New upstream version (Closes: #420063)
+  * Adding DAV support (Closes: #415678)
+  * Adding support for sites-[available|enabled]/ (Closes: #419912)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Thu, 19 Apr 2007 21:50:37 -0400
+
+nginx (0.5.13-1) unstable; urgency=low
+
+  * Adding FLV support. (Closes: #411105)
+  * Adding SSL support.
+
+ -- Jose Parrella <joseparrella@cantv.net>  Mon, 19 Feb 2007 10:30:07 -0400
+
+nginx (0.5.12-2) unstable; urgency=low
+
+  * Patching src/core/ngx_shmtx.h in order to solve FTBFS problems in 
+    non-x86 archs (Thanks to Igor Sysoev) (Closes: #410884)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Wed, 14 Feb 2007 13:32:01 -0400
+
+nginx (0.5.12-1) unstable; urgency=low
+
+  * New upstream version fixes FTBFS problems in non-x86 archs
+    (Closes: #409878)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Mon, 12 Feb 2007 19:37:07 -0400
+
+nginx (0.5.11-1) unstable; urgency=low
+
+  * New upstream version. (Closes: #405983)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Sun, 5 Feb 2007 19:35:56 -0400
+
+nginx (0.4.13-2) unstable; urgency=low
+
+  * Fixed default installation paths for www/ files, avoiding the
+    default installation of index.html in /var/www (Closes: #400103)
+  * Alexey Besciokov <proforg@maloletka.ru> provided new postinst and prerm
+    scripts with the ability to reload the master binary (Closes: #398009)
+
+ -- Jose Parrella <joseparrella@cantv.net>  Fri, 24 Nov 2006 07:12:46 -0400
+
+nginx (0.4.13-1) unstable; urgency=low
+
+  * New upstream version
+  * Fixed default configuration file which made nginx to fail at
+    installation and purge.
+
+ -- Jose Parrella <joseparrella@cantv.net>  Thu, 16 Nov 2006 22:44:33 -0400
+
+nginx (0.4.12-1) unstable; urgency=low
+
+  * New upstream version (Closes: #397969)
+  * nginx will now compile with debugging and status support
+    (Closes: #397967)
+  * Added configuration reload support in the init.d script
+    (Closes: #397980)
+  * Added logrotate script (Closes: #397978)
+  * Added debian/upstream.pl as a brief helper for new
+    upstream version packaging.
+  * Thanks to Alexey Besciokov <proforg@maloletka.ru> for
+    suggestions, bug reports and patches.
+
+ -- Jose Parrella <joseparrella@cantv.net>  Sun, 12 Nov 2006 18:31:24 -0400
+
+nginx (0.4.2-1) unstable; urgency=low
+
+  * Initial release (Closes: #386151)
+  * Tweaked the configuration file and the path handling for Debian.
+
+ -- Jose Parrella <joseparrella@cantv.net>  Thu, 14 Sep 2006 11:40:20 -0400
+

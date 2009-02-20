@@ -1,0 +1,82 @@
+#!/usr/bin/make -f
+
+CFLAGS = -Wall -g
+
+DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
+ifneq (,$(findstring sparc,$(DEB_BUILD_ARCH)))
+	CONFIGURE_OPTS = --with-cc-opt="-m32 -mcpu=ultrasparc"
+endif
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+config.status:
+	dh_testdir
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	./configure $(CONFIGURE_OPTS) --conf-path=/etc/nginx/nginx.conf \
+	--error-log-path=/var/log/nginx/error.log --pid-path=/var/run/nginx.pid \
+	--lock-path=/var/lock/nginx.lock   --http-log-path=/var/log/nginx/access.log \
+	--http-client-body-temp-path=/var/lib/nginx/body --http-proxy-temp-path=/var/lib/nginx/proxy \
+	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-http_stub_status_module \
+	--with-http_flv_module --with-http_ssl_module --with-http_dav_module \
+    --with-http_realip_module
+
+build: config.status
+	$(MAKE) build
+
+build-stamp:
+	dh_testdir
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
+	[ ! -f Makefile ] || $(MAKE) clean
+
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+		rm -f config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+		rm -f config.guess
+endif
+	dh_clean 
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+	dh_install
+
+binary-indep:
+
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs CHANGES
+	dh_installdocs
+	dh_installinit -r --no-start
+	dh_installman debian/nginx.1
+	dh_installlogrotate
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-indep binary-arch binary install
