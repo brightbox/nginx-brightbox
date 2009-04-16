@@ -27,7 +27,7 @@ endif
 	--http-client-body-temp-path=/var/lib/nginx/body --http-proxy-temp-path=/var/lib/nginx/proxy \
 	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-http_stub_status_module \
 	--with-http_flv_module --with-http_ssl_module --with-http_dav_module \
-    --with-http_realip_module
+    --with-http_realip_module --add-module=$(CURDIR)/debian/nginx-upstream-fair 
 
 build: config.status
 	$(MAKE) build
