@@ -31,7 +31,8 @@ endif
 	--with-http_flv_module --with-http_ssl_module --with-http_dav_module \
     --with-http_realip_module --add-module=$(CURDIR)/debian/nginx-upstream-fair \
 		--add-module=$(CURDIR)/debian/nginx-accesskey-2.0.3 \
-		--add-module=$(CURDIR)/debian/nginx-ey-balancer-090206
+		--add-module=$(CURDIR)/debian/nginx-ey-balancer-090206 \
+		--add-module=$(CURDIR)/debian/nginx-geoip-0.1
 
 build: config.status
 	$(MAKE) build

@@ -1,0 +1,39 @@
+Nginx GeoIP module
+--
+
+Description:
+--
+
+The Nginx GeoIP module is based on the original Geo module, the difference being that
+it is not being controlled by a piece of config, but makes use of the MaxMind GeoIP binary
+API natively. It provides for fast lookups from both the binary GeoLite and GeoIP Country
+databases available from MaxMind.
+
+One of the advantages to use the binary databases and API is getting automated updates
+from MaxMind through the geoipupdate utility. This is also the reason why SPIL GAMES wrote
+this module.
+
+
+Installation:
+--
+
+You'll need to re-compile Nginx from source to include this module.
+Modify your compile of Nginx by adding the following directive
+(modified to suit your path of course):
+
+./configure --add-module=/absolute/path/to/nginx-geoip-0.1
+make
+make install
+
+
+Usage:
+--
+
+Change your Nginx config file to include the 'geoip_country_file' directive:
+
+    geoip_country_file /absolute/path/to/GeoIP.dat;
+
+
+This will provide the following variables:
+
+    $geoip_country_code, $geoip_country_code3, $geoip_country_name
