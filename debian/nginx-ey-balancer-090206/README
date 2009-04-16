@@ -1,0 +1,36 @@
+haproxy maxconn for nginx
+Adds a request queue to Nginx that allows the limiting of concurrent requests
+passed to the upstream.  "max_connections N;" in an upstream directive means
+that each upstream server will be given N request at a time, per Nginx
+worker. For example, if you have two workers and "max_connections 1;" then
+there will be a total of 2 requests at a time on each upstream server.
+
+Some benchmarks: http://four.livejournal.com/955976.html
+
+Usage:
+
+  upstream mongrels {
+    server 127.0.0.1:8001;
+    server 127.0.0.1:8002;
+    max_connections 1;
+  }
+
+Install:
+
+This module requires one to patch Nginx. The module also includes a Makefile
+for easily building it into Nginx and running tests. If the Makefile is used
+then the first line must be changed to point to the Nginx source tree. 
+Here is an example of how one might compile nginx with this module.
+
+  tar -zxf nginx-0.6.35.tar.gz
+  tar -xzf ngx_max_connections-0.0.5.tar.gz
+  cd nginx-0.6.35
+  patch -p0 < ../ngx_max_connections-0.0.5/patches/nginx-0.6.35.patch
+  cd ../ngx_max_connections-0.0.5
+  vim Makefile #### edit the first line!
+  make configure
+  make
+  make test    #### requires ruby, rubygems, rack, and httperf
+
+
+

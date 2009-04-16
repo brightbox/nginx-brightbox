@@ -1,0 +1,41 @@
+error_log <%= logfile %> debug;
+events { }
+worker_processes <%= worker_processes %>;
+
+http {
+  default_type  application/octet-stream;
+  access_log <%= logfile %>;
+
+  upstream backend {
+  <% backends.each do |backend| %>
+    server localhost:<%= backend.port %> fail_timeout=<%= fail_timeout %>s;
+  <% end %>
+  <% if max_connections > 0 %>
+    max_connections <%= max_connections %>;
+    <% if queue_timeout %>
+    max_connections_queue_timeout <%= queue_timeout %>;
+    <% end %>
+    <% if max_queue_length %>
+    max_connections_max_queue_length <%= max_queue_length %>;
+    <% end %>
+  <% end %>
+  }
+
+  server {
+    listen <%= port %>;
+
+  <% if use_ssl? %>
+    ssl on;
+    ssl_certificate     <%= cert %>;
+    ssl_certificate_key <%= cert_key %>;
+  <% end %>
+  
+    location / { 
+      proxy_set_header Host $http_host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;           
+      proxy_redirect off;
+      proxy_pass http://backend; 
+    }
+  }
+}

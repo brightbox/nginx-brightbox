@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+
 CFLAGS = -Wall -g
 
 DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
@@ -28,7 +30,8 @@ endif
 	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi --with-http_stub_status_module \
 	--with-http_flv_module --with-http_ssl_module --with-http_dav_module \
     --with-http_realip_module --add-module=$(CURDIR)/debian/nginx-upstream-fair \
-		--add-module=$(CURDIR)/debian/nginx-accesskey-2.0.3
+		--add-module=$(CURDIR)/debian/nginx-accesskey-2.0.3 \
+		--add-module=$(CURDIR)/debian/nginx-ey-balancer-090206
 
 build: config.status
 	$(MAKE) build
@@ -37,7 +40,7 @@ build-stamp:
 	dh_testdir
 	touch $@
 
-clean:
+clean::
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
