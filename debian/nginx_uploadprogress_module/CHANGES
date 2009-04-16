@@ -1,0 +1,41 @@
+nginx_upload_progress release 0.5                                  28 Jun 2008
+
+ * fixed progress probes returning "done" when upload was still in progress
+   (thanks to Alexandr Kutuzov for his detailed report)
+
+ * fixed stuck worker process because of rescheduled timer when issuing a 
+   reload or graceful quit (thanks to Alexandr Kutuzov for his detailed
+   report)
+
+nginx_upload_progress release 0.4                                  18 May 2008
+
+ * Incompatible change: track_uploads MUST be the last directive of a location
+   it also must be in a proxy_pass or fastcgi_pass location.
+
+ * fixed multiple worker_process issue
+
+ * fixed several crash conditions
+
+nginx_upload_progress release 0.3                                  06 May 2008
+
+ * fixed crash if the upload was denied by nginx because of any error
+   condition (thanks to Michal Drapiewski for his detailed report)
+	 
+ * report original upload error condition to client in the upload progress 
+   probe
+ 
+ * case-insensitive checking of the X-Progress-ID header to overcome Internet
+   Explorer XMLHttpRequest issue.
+
+nginx_upload_progress release 0.2                                  10 Oct 2007
+
+ * the system now remembers old active uploads for 1 minute to be
+   able to send back either error status or done status to upload 
+	 progress probes.
+	 
+ * track of HTTP error 413 (request entity too large) is implemented
+   and the error status '413' is returned.
+
+nginx_upload_progress release 0.1                                   3 Oct 2007
+
+ * public release
