@@ -1,3 +1,14 @@
+nginx (0.6.35-bbox1) hardy; urgency=low
+
+  * Added nginx-upstream-fair module
+  * Added accesskey module
+  * Added nginx-ey-balancer module
+  * Added nginx-geoip-0.1 module
+  * Added uploadprogress module
+  * Added upstream_hash module
+
+ -- John Leach <john@brightbox.co.uk>  Thu, 16 Apr 2009 23:35:03 +0100
+
 nginx (0.6.35-0ubuntu1) jaunty; urgency=low
 
   * New upstream bugfix release
