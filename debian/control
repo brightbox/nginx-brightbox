@@ -3,13 +3,13 @@ Section: web
 Priority: optional
 Maintainer: John Leach <john@brightbox.co.uk>
 XSBC-Original-Maintainer: Jose Parrella <bureado@debian.org>
-Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev
+Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev, cdbs, libgeoip-dev
 Standards-Version: 3.8.0
 Homepage: http://nginx.net
 
 Package: nginx
 Architecture: any
-Depends: ${shlibs:Depends}, lsb-base (>= 3.2-14)
+Depends: ${shlibs:Depends}, lsb-base (>= 3.2)
 Provides: httpd
 Description: small, but very powerful and efficient web server
  Nginx (engine x) is a web server created by Igor Sysoev and kindly provided
