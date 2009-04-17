@@ -1,3 +1,9 @@
+nginx (0.6.36-0bbox1) hardy; urgency=low
+
+  * New Upstream Version, 0.6.36
+
+ -- John Leach <john@brightbox.co.uk>  Fri, 17 Apr 2009 14:09:10 +0100
+
 nginx (0.6.35-bbox1) hardy; urgency=low
 
   * Added nginx-upstream-fair module
