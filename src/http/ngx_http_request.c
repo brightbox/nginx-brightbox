@@ -650,6 +650,7 @@ ngx_http_process_request_line(ngx_event_t *rev)
 
             r->request_line.len = r->request_end - r->request_start;
             r->request_line.data = r->request_start;
+            *r->request_end = '\0';
 
 
             if (r->args_start) {
@@ -1387,9 +1388,7 @@ ngx_http_process_request_header(ngx_http_request_t *r)
         }
     }
 
-    if (r->method & (NGX_HTTP_POST|NGX_HTTP_PUT)
-        && r->headers_in.content_length_n == -1)
-    {
+    if (r->method & NGX_HTTP_PUT && r->headers_in.content_length_n == -1) {
         ngx_log_error(NGX_LOG_INFO, r->connection->log, 0,
                   "client sent %V method without \"Content-Length\" header",
                   &r->method_name);
@@ -2091,6 +2090,7 @@ ngx_http_set_keepalive(ngx_http_request_t *r)
     ngx_log_debug0(NGX_LOG_DEBUG_HTTP, c->log, 0, "set http keepalive handler");
 
     if (r->discard_body) {
+        r->write_event_handler = ngx_http_request_empty_handler;
         r->lingering_time = ngx_time() + (time_t) (clcf->lingering_time / 1000);
         ngx_add_timer(rev, clcf->lingering_timeout);
         return;
@@ -2264,8 +2264,15 @@ ngx_http_set_keepalive(ngx_http_request_t *r)
                        (const void *) &tcp_nodelay, sizeof(int))
             == -1)
         {
+#if (NGX_SOLARIS)
+            /* Solaris returns EINVAL if a socket has been shut down */
+            c->log_error = NGX_ERROR_IGNORE_EINVAL;
+#endif
+
             ngx_connection_error(c, ngx_socket_errno,
                                  "setsockopt(TCP_NODELAY) failed");
+
+            c->log_error = NGX_ERROR_INFO;
             ngx_http_close_connection(c);
             return;
         }

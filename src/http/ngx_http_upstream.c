@@ -1099,62 +1099,59 @@ ngx_http_upstream_process_header(ngx_event_t *rev)
 #endif
     }
 
-    n = c->recv(c, u->buffer.last, u->buffer.end - u->buffer.last);
+    for ( ;; ) {
 
-    if (n == NGX_AGAIN) {
+        n = c->recv(c, u->buffer.last, u->buffer.end - u->buffer.last);
+
+        if (n == NGX_AGAIN) {
 #if 0
-        ngx_add_timer(rev, u->read_timeout);
+            ngx_add_timer(rev, u->read_timeout);
 #endif
 
-        if (ngx_handle_read_event(rev, 0) == NGX_ERROR) {
-            ngx_http_upstream_finalize_request(r, u,
+            if (ngx_handle_read_event(rev, 0) == NGX_ERROR) {
+                ngx_http_upstream_finalize_request(r, u,
                                                NGX_HTTP_INTERNAL_SERVER_ERROR);
+                return;
+            }
+
             return;
         }
 
-        return;
-    }
-
-    if (n == 0) {
-        ngx_log_error(NGX_LOG_ERR, rev->log, 0,
-                      "upstream prematurely closed connection");
-    }
-
-    if (n == NGX_ERROR || n == 0) {
-        ngx_http_upstream_next(r, u, NGX_HTTP_UPSTREAM_FT_ERROR);
-        return;
-    }
-
-    u->buffer.last += n;
-
-#if 0
-    u->valid_header_in = 0;
-
-    u->peer.cached = 0;
-#endif
-
-    rc = u->process_header(r);
-
-    if (rc == NGX_AGAIN) {
-#if 0
-        ngx_add_timer(rev, u->read_timeout);
-#endif
-
-        if (u->buffer.pos == u->buffer.end) {
+        if (n == 0) {
             ngx_log_error(NGX_LOG_ERR, rev->log, 0,
-                          "upstream sent too big header");
+                          "upstream prematurely closed connection");
+        }
 
-            ngx_http_upstream_next(r, u, NGX_HTTP_UPSTREAM_FT_INVALID_HEADER);
+        if (n == NGX_ERROR || n == 0) {
+            ngx_http_upstream_next(r, u, NGX_HTTP_UPSTREAM_FT_ERROR);
             return;
         }
 
-        if (ngx_handle_read_event(rev, 0) == NGX_ERROR) {
-            ngx_http_upstream_finalize_request(r, u,
-                                               NGX_HTTP_INTERNAL_SERVER_ERROR);
-            return;
+        u->buffer.last += n;
+
+#if 0
+        u->valid_header_in = 0;
+
+        u->peer.cached = 0;
+#endif
+
+        rc = u->process_header(r);
+
+        if (rc == NGX_AGAIN) {
+
+            if (u->buffer.pos == u->buffer.end) {
+                ngx_log_error(NGX_LOG_ERR, rev->log, 0,
+                              "upstream sent too big header");
+
+                ngx_http_upstream_next(r, u,
+                                       NGX_HTTP_UPSTREAM_FT_INVALID_HEADER);
+                return;
+            }
+
+            continue;
         }
 
-        return;
+        break;
     }
 
     if (rc == NGX_HTTP_UPSTREAM_INVALID_HEADER) {
@@ -1962,6 +1959,7 @@ ngx_http_upstream_process_downstream(ngx_http_request_t *r)
 static void
 ngx_http_upstream_process_body(ngx_event_t *ev)
 {
+    ngx_uint_t            del;
     ngx_temp_file_t      *tf;
     ngx_event_pipe_t     *p;
     ngx_connection_t     *c, *downstream;
@@ -2057,20 +2055,25 @@ ngx_http_upstream_process_body(ngx_event_t *ev)
 
         if (u->store) {
 
+            del = p->upstream_error;
+
             tf = u->pipe->temp_file;
 
-            if (p->upstream_eof
-                && u->headers_in.status_n == NGX_HTTP_OK
-                && (u->headers_in.content_length_n == -1
-                    || (u->headers_in.content_length_n == tf->offset)))
-            {
-                ngx_http_upstream_store(r, u);
+            if (p->upstream_eof || p->upstream_done) {
 
-            } else if ((p->upstream_error
-                        || (p->upstream_eof
-                            && u->headers_in.status_n != NGX_HTTP_OK))
-                       && tf->file.fd != NGX_INVALID_FILE)
-            {
+                if (u->headers_in.status_n == NGX_HTTP_OK
+                    && (u->headers_in.content_length_n == -1
+                        || (u->headers_in.content_length_n == tf->offset)))
+                {
+                    ngx_http_upstream_store(r, u);
+
+                } else {
+                    del = 1;
+                }
+            }
+
+            if (del && tf->file.fd != NGX_INVALID_FILE) {
+
                 if (ngx_delete_file(tf->file.name.data) == NGX_FILE_ERROR) {
 
                     ngx_log_error(NGX_LOG_CRIT, r->connection->log, ngx_errno,
