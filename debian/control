@@ -1,4 +1,4 @@
-Source: nginx
+Source: nginx-brightbox
 Section: web
 Priority: optional
 Maintainer: John Leach <john@brightbox.co.uk>
@@ -7,10 +7,11 @@ Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl
 Standards-Version: 3.8.0
 Homepage: http://nginx.net
 
-Package: nginx
+Package: nginx-brightbox
 Architecture: any
 Depends: ${shlibs:Depends}, lsb-base (>= 3.2)
 Provides: httpd
+Conflicts: nginx
 Description: small, but very powerful and efficient web server
  Nginx (engine x) is a web server created by Igor Sysoev and kindly provided
  to the open-source community. This server can be used as standalone HTTP

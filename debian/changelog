@@ -1,3 +1,11 @@
+nginx-brightbox (0.6.36-0bbox1) hardy; urgency=low
+
+  * Fixed initscript check_proc_status for Hardy
+  * Changed package name to nginx-brightbox
+  * Conflicts with nginx package
+
+ -- John Leach <john@brightbox.co.uk>  Tue, 21 Apr 2009 16:58:17 +0100
+
 nginx (0.6.36-0bbox1) hardy; urgency=low
 
   * New Upstream Version, 0.6.36

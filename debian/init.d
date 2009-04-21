@@ -24,6 +24,37 @@ fi
 
 set -e
 
+# Return LSB status, grabbed from a newer lsb-base
+status_of_proc () {
+    local pidfile daemon name status
+
+    pidfile=
+    OPTIND=1
+    while getopts p: opt ; do
+        case "$opt" in
+            p)  pidfile="$OPTARG";;
+        esac
+    done
+    shift $(($OPTIND - 1))
+
+    if [ -n "$pidfile" ]; then
+        pidfile="-p $pidfile"
+    fi
+    daemon="$1"
+    name="$2"
+
+    status="0"
+    pidofproc $pidfile $daemon >/dev/null || status="$?"
+    if [ "$status" = 0 ]; then
+        log_success_msg "$name is running"
+        return 0
+    else
+        log_failure_msg "$name is not running"
+        return $status
+    fi
+}
+
+
 . /lib/lsb/init-functions
 
 case "$1" in
