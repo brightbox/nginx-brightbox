@@ -3,17 +3,21 @@ Section: web
 Priority: optional
 Maintainer: John Leach <john@brightbox.co.uk>
 XSBC-Original-Maintainer: Jose Parrella <bureado@debian.org>
-Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev, cdbs, libgeoip-dev
+Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev, cdbs, 
+  libgeoip-dev
 Standards-Version: 3.8.0
 Homepage: http://nginx.net
 
 Package: nginx-brightbox
 Architecture: any
-Depends: ${shlibs:Depends}, lsb-base (>= 3.2)
-Provides: httpd
+Depends: ${shlibs:Depends}, lsb-base (>= 3.2), passenger-common (= 2.2.1-1bbox1)
+Provides: httpd, nginx
 Conflicts: nginx
 Description: small, but very powerful and efficient web server
  Nginx (engine x) is a web server created by Igor Sysoev and kindly provided
  to the open-source community. This server can be used as standalone HTTP
  server and as a reverse proxy server before some Apache or another big 
  server to reduce load to backend servers by many concurrent HTTP-sessions.
+ .
+ This is a custom version of NGINX by Brightbox, a specialist Rails hosting company.
+ It has a number of common extensions, including the new Phusion Passenger module.

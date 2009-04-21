@@ -33,7 +33,8 @@ endif
 		--add-module=$(CURDIR)/debian/nginx-accesskey-2.0.3 \
 		--add-module=$(CURDIR)/debian/nginx-ey-balancer-090206 \
 		--add-module=$(CURDIR)/debian/nginx-geoip-0.1 \
-		--add-module=$(CURDIR)/debian/nginx_uploadprogress_module
+		--add-module=$(CURDIR)/debian/nginx_uploadprogress_module \
+		--add-module=$(CURDIR)/debian/passenger-2.2.1/ext/nginx
 
 build: config.status
 	$(MAKE) build

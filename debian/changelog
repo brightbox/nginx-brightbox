@@ -1,3 +1,10 @@
+nginx-brightbox (0.6.36-0bbox2) hardy; urgency=low
+
+  * Added phusion passenger support
+  * Provides nginx
+
+ -- John Leach <john@brightbox.co.uk>  Tue, 21 Apr 2009 17:12:34 +0100
+
 nginx-brightbox (0.6.36-0bbox1) hardy; urgency=low
 
   * Fixed initscript check_proc_status for Hardy
