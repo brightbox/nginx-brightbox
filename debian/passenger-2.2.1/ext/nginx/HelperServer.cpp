@@ -719,7 +719,7 @@ public:
 		}
 		
 		pool = ptr(new StandardApplicationPool(
-			rootDir + "/bin/passenger-spawn-server",
+			rootDir + "/passenger-spawn-server",
 			"", ruby
 		));
 		pool->setMax(maxPoolSize);
