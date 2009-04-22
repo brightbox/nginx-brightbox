@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: John Leach <john@brightbox.co.uk>
 XSBC-Original-Maintainer: Jose Parrella <bureado@debian.org>
 Build-Depends: debhelper (>= 5), autotools-dev, libpcre3-dev, zlib1g-dev, libssl-dev, cdbs, 
-  libgeoip-dev
+  libgeoip-dev, rake, rubygems, ruby-dev
 Standards-Version: 3.8.0
 Homepage: http://nginx.net
 
