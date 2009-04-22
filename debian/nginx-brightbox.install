@@ -3,3 +3,4 @@ html/* var/www/nginx-default
 debian/conf/* etc/nginx
 debian/NEWS.Debian usr/share/doc/nginx
 debian/passenger-2.2.1/ext/nginx/HelperServer usr/lib/phusion_passenger/ext/nginx/
+debian/passenger.conf etc/nginx/conf.d/

@@ -1,8 +1,15 @@
+nginx-brightbox (0.6.36-0bbox4) hardy; urgency=low
+
+  * Add a default nginx passenger config
+  * Change dependency version for passenger-common
+
+ -- John Leach <john@brightbox.co.uk>  Wed, 22 Apr 2009 19:30:38 +0100
+
 nginx-brightbox (0.6.36-0bbox3) hardy; urgency=low
 
   * Fix build dependencies
 
- -- John Leach <john@brightbox.co.uk>  Tue, 22 Apr 2009 18:31:08 +0100
+ -- John Leach <john@brightbox.co.uk>  Wed, 22 Apr 2009 18:31:08 +0100
 
 nginx-brightbox (0.6.36-0bbox2) hardy; urgency=low
 
