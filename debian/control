@@ -10,7 +10,7 @@ Homepage: http://nginx.net
 
 Package: nginx-brightbox
 Architecture: any
-Depends: ${shlibs:Depends}, lsb-base (>= 3.2), passenger-common (>= 2.2.1-1)
+Depends: ${shlibs:Depends}, lsb-base (>= 3.2), passenger-common (>= 2.2.2-0)
 Provides: httpd, nginx
 Conflicts: nginx
 Description: small, but very powerful and efficient web server

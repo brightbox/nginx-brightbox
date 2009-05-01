@@ -1,3 +1,9 @@
+nginx-brightbox (0.6.36-0bbox5) hardy; urgency=low
+
+  * Passenger module upgraded to 2.2.2
+
+ -- John Leach <john@brightbox.co.uk>  Fri, 01 May 2009 13:24:22 +0100
+
 nginx-brightbox (0.6.36-0bbox4) hardy; urgency=low
 
   * Add a default nginx passenger config
