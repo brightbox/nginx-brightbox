@@ -1,3 +1,11 @@
+nginx-brightbox (0.6.36-0bbox6) hardy; urgency=low
+
+  * Passenger module upgraded to 2.2.5
+  * Added nginx_upload_module-2.0.10
+  * Enabled mail modules
+
+ -- John Leach <john@brightbox.co.uk>  Thu, 03 Sep 2009 08:50:17 +0100
+
 nginx-brightbox (0.6.36-0bbox5) hardy; urgency=low
 
   * Passenger module upgraded to 2.2.2
