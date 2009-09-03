@@ -1,0 +1,125 @@
+#!/usr/bin/env ruby
+#  Phusion Passenger - http://www.modrails.com/
+#  Copyright (c) 2008, 2009 Phusion
+#
+#  "Phusion Passenger" is a trademark of Hongli Lai & Ninh Bui.
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in
+#  all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#  THE SOFTWARE.
+
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "/../ext"))
+require 'phusion_passenger/admin_tools/control_process'
+require 'optparse'
+
+include PhusionPassenger::AdminTools
+
+# ANSI color codes
+RESET   = "\e[0m"
+BOLD    = "\e[1m"
+YELLOW  = "\e[33m"
+BLACK_BG = "\e[40m"
+BLUE_BG = "\e[44m"
+
+def show_status(control_process, options = {})
+	case options[:show]
+	when 'pool'
+		begin
+			text = control_process.status
+		rescue SystemCallError => e
+			STDERR.puts "*** ERROR: Cannot query status for Passenger instance #{control_process.pid}:"
+			STDERR.puts e.to_s
+			exit 2
+		end
+		
+		# Colorize output
+		text.gsub!(/^(----)(.*)$/, YELLOW + BLUE_BG + BOLD + '\1\2' + RESET)
+		
+		puts text
+		
+	when 'backtraces'
+		begin
+			text = control_process.backtraces
+		rescue SystemCallError => e
+			STDERR.puts "*** ERROR: Cannot query status for Passenger instance #{control_process.pid}:"
+			STDERR.puts e.to_s
+			exit 2
+		end
+		
+		# Colorize output
+		text.gsub!(/^(Thread .*:)$/, BLACK_BG + YELLOW + '\1' + RESET)
+		text.gsub!(/^( +in '.*? )(.*?)\(/, '\1' + BOLD + '\2' + RESET + '(')
+		
+		puts text
+	end
+end
+
+def start
+	options = { :show => 'pool' }
+	parser = OptionParser.new do |opts|
+		opts.banner = "Usage: passenger-status [options] [Phusion Passenger's PID]"
+		opts.separator ""
+		opts.separator "Tool for inspecting Phusion Passenger's internal status."
+		opts.separator ""
+
+		opts.separator "Options:"
+		opts.on("--show=pool|backtraces", String,
+		        "Whether to show the pool's contents or\n" <<
+		        "#{' ' * 37}the backtraces of all threads.") do |what|
+			if what !~ /\A(pool|backtraces)\Z/
+				STDERR.puts "Invalid argument for --show."
+				exit 1
+			else
+				options[:show] = what
+			end
+		end
+	end
+	begin
+		parser.parse!
+	rescue OptionParser::ParseError => e
+		puts e
+		puts
+		puts "Please see '--help' for valid options."
+		exit 1
+	end
+	
+	if ARGV.empty?
+		control_processes = ControlProcess.list
+		if control_processes.empty?
+			STDERR.puts("ERROR: Phusion Passenger doesn't seem to be running.")
+			exit 2
+		elsif control_processes.size == 1
+			show_status(control_processes.first, options)
+		else
+			puts "It appears that multiple Passenger instances are running. Please select a"
+			puts "specific one by running:"
+			puts
+			puts "  passenger-status <PID>"
+			puts
+			puts "The following Passenger instances are running:"
+			control_processes.each do |control|
+				puts "  PID: #{control.pid}"
+			end
+			exit 1
+		end
+	else
+		show_status(ControlProcess.for_pid(ARGV[0].to_i), options)
+	end
+end
+
+start
