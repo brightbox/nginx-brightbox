@@ -1,3 +1,10 @@
+nginx-brightbox (0.6.36-0bbox7) hardy; urgency=low
+
+  * Added Replaces field for nginx
+  * Changed initscript name from nginx-brightbox to nginx
+
+ -- John Leach <john@brightbox.co.uk>  Thu, 03 Sep 2009 21:08:06 +0100
+
 nginx-brightbox (0.6.36-0bbox6) hardy; urgency=low
 
   * Passenger module upgraded to 2.2.5

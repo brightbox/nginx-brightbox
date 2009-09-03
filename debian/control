@@ -13,6 +13,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, lsb-base (>= 3.2), passenger-common (>= 2.2.5-0)
 Provides: httpd, nginx
 Conflicts: nginx
+Replaces: nginx
 Description: small, but very powerful and efficient web server
  Nginx (engine x) is a web server created by Igor Sysoev and kindly provided
  to the open-source community. This server can be used as standalone HTTP
