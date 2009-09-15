@@ -1,3 +1,9 @@
+nginx-brightbox (0.6.39-0bbox1) hardy; urgency=low
+
+  * New upstream bugfix release, 0.6.39
+
+ -- John Leach <john@brightbox.co.uk>  Tue, 15 Sep 2009 13:21:00 +0100
+
 nginx-brightbox (0.6.36-0bbox7) hardy; urgency=low
 
   * Added Replaces field for nginx
