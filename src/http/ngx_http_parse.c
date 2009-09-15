@@ -738,6 +738,7 @@ ngx_http_parse_header_line(ngx_http_request_t *r, ngx_buf_t *b)
 
         /* first char */
         case sw_start:
+            r->header_name_start = p;
             r->invalid_header = 0;
 
             switch (ch) {
@@ -750,7 +751,6 @@ ngx_http_parse_header_line(ngx_http_request_t *r, ngx_buf_t *b)
                 goto header_done;
             default:
                 state = sw_name;
-                r->header_name_start = p;
 
                 c = lowcase[ch];
 
@@ -1123,11 +1123,15 @@ ngx_http_parse_complex_uri(ngx_http_request_t *r, ngx_uint_t merge_slashes)
 #endif
             case '/':
                 state = sw_slash;
-                u -= 4;
-                if (u < r->uri.data) {
-                    return NGX_HTTP_PARSE_INVALID_REQUEST;
-                }
-                while (*(u - 1) != '/') {
+                u -= 5;
+                for ( ;; ) {
+                    if (u < r->uri.data) {
+                        return NGX_HTTP_PARSE_INVALID_REQUEST;
+                    }
+                    if (*u == '/') {
+                        u++;
+                        break;
+                    }
                     u--;
                 }
                 break;

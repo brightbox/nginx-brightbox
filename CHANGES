@@ -1,4 +1,30 @@
 
+Changes with nginx 0.6.39                                        14 Sep 2009
+
+    *) Security: a segmentation fault might occur in worker process while 
+       specially crafted request handling.
+       Thanks to Chris Ries.
+
+    *) Bugfix: a segmentation fault might occur in worker process, if 
+       error_log was set to info or debug level.
+       Thanks to Sergey Bochenkov.
+
+
+Changes with nginx 0.6.38                                        22 Jun 2009
+
+    *) Feature: the "keepalive_requests" directive.
+
+
+Changes with nginx 0.6.37                                        18 May 2009
+
+    *) Feature: Microsoft specific "AUTH LOGIN with User Name" mode support 
+       in mail proxy server.
+       Thanks to Maxim Dounin.
+
+    *) Bugfix: nginx could not be built on platforms different from i386, 
+       amd64, sparc, and ppc; the bug had appeared in 0.6.36.
+
+
 Changes with nginx 0.6.36                                        02 Apr 2009
 
     *) Change: now the "Invalid argument" error returned by 
@@ -1006,8 +1032,8 @@ Changes with nginx 0.5.12                                        12 Feb 2007
        amd64, sparc, and ppc; the bug had appeared in 0.5.8.
 
     *) Bugfix: a segmentation fault might occur in worker process if the 
-       temporarily files were used while working with FastCGI server; the 
-       bug had appeared in 0.5.8.
+       temporary files were used while working with FastCGI server; the bug 
+       had appeared in 0.5.8.
 
     *) Bugfix: a segmentation fault might occur in worker process if the 
        $fastcgi_script_name variable was logged.
@@ -1910,8 +1936,8 @@ Changes with nginx 0.3.31                                        10 Mar 2006
        in 0.3.18.
 
     *) Bugfix: if the HTTPS protocol was used in the "proxy_pass" directive 
-       and the request body was in temporarily file then the request was 
-       not transferred.
+       and the request body was in temporary file then the request was not 
+       transferred.
 
     *) Bugfix: perl 5.8.8 compatibility.
 
