@@ -1,3 +1,9 @@
+nginx-brightbox (0.6.39-0bbox2) hardy; urgency=low
+
+  * Rebuilt against passenger-2.2.15
+
+ -- Ben Arblaster <ben@brightbox.co.uk>  Tue, 6 Jul 2010 17:10:00 +0100
+
 nginx-brightbox (0.6.39-0bbox1) hardy; urgency=low
 
   * New upstream bugfix release, 0.6.39
